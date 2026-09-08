@@ -1,0 +1,269 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Battambang', system-ui, -apple-system, sans-serif;
+  --font-battambang: 'Battambang', sans-serif;
+  --font-moul: 'Moul', cursive, serif;
+  --font-muol-light: 'Khmer OS Muol Light', 'Muol Light', 'Khmer OS Muol', 'Moul Light', 'Moul', cursive, serif;
+}
+
+@layer base {
+  html, body {
+    font-family: 'Battambang', 'Kantumruy Pro', system-ui, -apple-system, sans-serif;
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+
+  /* Prevent Khmer subscript (ជើងអក្សរ) and accents from getting clipped & remove bolding */
+  h1, h2, h3, h4, h5, h6, p, span, button, a, label, input, select, textarea, strong, b, th, td {
+    line-height: inherit;
+    font-weight: 400;
+  }
+}
+
+.font-moul {
+  font-family: 'Khmer OS Muol Light', 'Muol Light', 'Khmer OS Muol', 'Moul', cursive, serif !important;
+  line-height: 1.8;
+}
+
+.font-muol-light, .font-moul-light {
+  font-family: 'Khmer OS Muol Light', 'Muol Light', 'Khmer OS Muol', 'Moul Light', 'Moul', cursive, serif !important;
+  font-weight: 400 !important;
+  line-height: 1.8;
+}
+
+.font-khmer-title {
+  font-family: 'Moul', 'Battambang', sans-serif !important;
+  line-height: 1.8;
+}
+
+.font-battambang {
+  font-family: 'Battambang', sans-serif !important;
+  line-height: 1.65;
+}
+
+.font-kantumruy {
+  font-family: 'Kantumruy Pro', 'Battambang', sans-serif !important;
+  line-height: 1.65;
+}
+
+.font-serif-luxury {
+  font-family: 'Playfair Display', 'Cinzel', 'Kantumruy Pro', 'Khmer OS Battambang', serif;
+  line-height: 1.65;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+/* Gold Gradient utilities */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #DFBA49 0%, #C89F2A 50%, #A8811A 100%);
+}
+
+.bg-gold-subtle {
+  background: linear-gradient(135deg, #FCF8EE 0%, #F8F1DE 100%);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #B58A1E 0%, #8A6407 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-gold-gradient {
+  border-image: linear-gradient(to right, #DFBA49, #F5D77F, #A8811A) 1;
+}
+
+/* Custom animations for petals and subtle glow */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+
+@keyframes fallPetal {
+  0% {
+    transform: translate(0, -10px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(80px, 100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-petal {
+  animation: fallPetal linear infinite;
+}
+
+/* GPU-Accelerated Silky Smooth Entrance Animations (60fps / 120fps locked) */
+@keyframes smoothFadeUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes smoothFadeDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -24px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes smoothFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes smoothKenBurns {
+  0% {
+    transform: scale3d(1.08, 1.08, 1);
+  }
+  100% {
+    transform: scale3d(1.0, 1.0, 1);
+  }
+}
+
+.animate-smooth-fade-up {
+  animation: smoothFadeUp 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.animate-smooth-fade-down {
+  animation: smoothFadeDown 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.animate-smooth-kenburns {
+  animation: smoothKenBurns 12s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+@keyframes ornamentExpand {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.animate-ornament-expand {
+  animation: ornamentExpand 1.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+@keyframes goldenShimmer {
+  0%, 100% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.3));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(255, 229, 143, 0.75));
+  }
+}
+
+.animate-golden-shimmer {
+  animation: goldenShimmer 4.5s ease-in-out infinite;
+}
+
+@keyframes goldenRipple {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 14px rgba(212, 175, 55, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
+}
+
+.animate-golden-ripple {
+  animation: goldenRipple 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+
+.animate-gentle-bounce {
+  animation: gentleBounce 2.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Stagger Animation Delays for Graceful Cinematic Flow */
+.delay-100 { animation-delay: 200ms; }
+.delay-150 { animation-delay: 300ms; }
+.delay-200 { animation-delay: 450ms; }
+.delay-300 { animation-delay: 650ms; }
+.delay-450 { animation-delay: 950ms; }
+.delay-600 { animation-delay: 1300ms; }
+.delay-750 { animation-delay: 1650ms; }
+.delay-900 { animation-delay: 2000ms; }
+.delay-1100 { animation-delay: 2400ms; }
+
+/* Hide scrollbars across the entire application and support no-scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  height: 0px;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Global scrollbar hidden for smooth full-screen digital invitations */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+

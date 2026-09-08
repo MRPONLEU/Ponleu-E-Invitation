@@ -1,0 +1,88 @@
+{
+  "project_id": "gen-lang-client-0713481320",
+  "schema": {
+    "collections": {
+      "templates": {
+        "description": "Templates available for users to select.",
+        "fields": {
+          "id": "string",
+          "code": "string",
+          "nameKh": "string",
+          "nameEn": "string",
+          "style": "string",
+          "coverImage": "string",
+          "previewImage": "string",
+          "primaryColor": "string",
+          "accentColor": "string",
+          "bgGradient": "string",
+          "fontFamily": "string",
+          "descriptionKh": "string",
+          "descriptionEn": "string",
+          "musicTrackTitle": "string",
+          "usageCount": "number",
+          "tags": "array",
+          "isPopular": "boolean"
+        },
+        "rules": {
+          "read": "true",
+          "write": "true"
+        }
+      },
+      "musicTracks": {
+        "description": "Background music tracks available.",
+        "fields": {
+          "id": "string",
+          "titleKh": "string",
+          "titleEn": "string",
+          "category": "string",
+          "audioUrl": "string",
+          "duration": "string",
+          "isPopular": "boolean"
+        },
+        "rules": {
+          "read": "true",
+          "write": "true"
+        }
+      },
+      "couples": {
+        "description": "Couple wedding events containing details, agendas, wishes, and bank accounts.",
+        "fields": {
+          "id": "string",
+          "slug": "string",
+          "groomNameKh": "string",
+          "groomNameEn": "string",
+          "brideNameKh": "string",
+          "brideNameEn": "string",
+          "groomFatherKh": "string",
+          "groomMotherKh": "string",
+          "brideFatherKh": "string",
+          "brideMotherKh": "string",
+          "weddingDate": "string",
+          "weddingTimeKh": "string",
+          "weddingTimeEn": "string",
+          "venueNameKh": "string",
+          "venueNameEn": "string",
+          "venueAddressKh": "string",
+          "venueAddressEn": "string",
+          "venueMapUrl": "string",
+          "templateId": "string",
+          "customTheme": "map",
+          "coverPhoto": "string",
+          "galleryPhotos": "array",
+          "agendas": "array",
+          "bankAccounts": "array",
+          "guests": "array",
+          "wishes": "array",
+          "createdDate": "string",
+          "status": "string",
+          "packageType": "string",
+          "adminPromo": "map"
+        },
+        "rules": {
+          "read": "true",
+          "write": "true"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Ponleu E-Invitation Platform",
+  "description": "វេទិកាបង្កើតសំបុត្រអញ្ជើញឌីជីថល e-Invitation ទំនើប គ្រប់គ្រងគំរូកាត បង្កើតគណនីគូស្វាមីភរិយា និង Copy Link អញ្ជើញភ្ញៀវម្នាក់ៗយ៉ាងងាយស្រួល",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
