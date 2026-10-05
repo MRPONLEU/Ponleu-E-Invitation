@@ -1,5 +1,6 @@
 import { Template, CoupleEvent, UserAccount, MusicTrack, AgendaItem } from '../types';
 import weddingArtwork368 from '../assets/images/frome1.jpg';
+import weddingArtworkClassic from '../assets/images/frome.jpg';
 import ponleuLogo from '../assets/images/ponleu_logo.svg';
 
 export const INITIAL_MUSIC_TRACKS: MusicTrack[] = [
@@ -53,6 +54,26 @@ export const INITIAL_MUSIC_TRACKS: MusicTrack[] = [
 ];
 
 export const INITIAL_TEMPLATES: Template[] = [
+  {
+    id: 'tpl_gold_369',
+    code: 'T369',
+    nameKh: 'គំរូ 369 (រចនាប័ទ្ម បុរាណខ្មែរ មាសរាជវាំង - គ្មាន Slide Show មិនបាច់ដាក់រូប)',
+    nameEn: 'T369_Classic Khmer Royal Gold (No Photo / No Slideshow)',
+    style: 'traditional-gold',
+    badge: 'គ្មាន Slide Show',
+    coverImage: weddingArtworkClassic,
+    previewImage: weddingArtworkClassic,
+    primaryColor: '#D4AF37',
+    accentColor: '#8C6D1F',
+    bgGradient: 'from-[#FFFDF5] via-[#FAF4E5] to-[#F5EBD0]',
+    fontFamily: 'Moul',
+    descriptionKh: 'គំរូ 369៖ រចនាប័ទ្មបុរាណរាជវាំងខ្មែរ មាសប្រណិត គ្មាន Slide Show សម្រាប់គូស្នេហ៍ដែលមិនចង់ដាក់រូបថតផ្ទាល់ខ្លួន (No Photo Needed) បើកសំបុត្រចូលមើលព័ត៌មានមង្គលការពិធីផ្ទាល់ភ្លាមៗ។',
+    descriptionEn: 'Template 369: Dedicated elegant theme for couples who do not want photos. No slideshow, opening envelope goes directly to full ceremonial invitation.',
+    musicTrackTitle: 'ភ្លេងការខ្មែរ - បង្កក់សិរី (Khmer Classical Chimes)',
+    usageCount: 198,
+    tags: ['គំរូ 369', 'គ្មានរូបថត', 'គ្មាន Slide Show', 'មាសរាជវាំង', 'បុរាណខ្មែរ'],
+    isPopular: true,
+  },
   {
     id: 'tpl_gold_01',
     code: 'T01',
@@ -297,6 +318,120 @@ export const INITIAL_COUPLES: CoupleEvent[] = [
     ],
 
     createdDate: '2026-08-15',
+    status: 'active',
+    packageType: 'VIP Gold',
+    adminPromo: {
+      enabled: true,
+      textKh: 'រៀបចំដោយ ពន្លឺ-បោះពុម្ភ / ទំនាក់ទំនង៖ 097 370 7998',
+      imageUrl: ponleuLogo
+    },
+    contactFacebook: 'https://facebook.com/',
+    contactTelegram: 'https://t.me/username',
+    contactPhone: '012345678'
+  },
+  {
+    id: 'couple_369',
+    slug: 'piseth-rachana',
+    groomNameKh: 'ចាន់ ពិសិដ្ឋ',
+    groomNameEn: 'Chan Piseth',
+    brideNameKh: 'កែវ រចនា',
+    brideNameEn: 'Keo Rachana',
+    groomNickKh: 'ពិសិដ្ឋ',
+    brideNickKh: 'រចនា',
+
+    groomFatherKh: 'លោក ចាន់ សុវណ្ណ',
+    groomMotherKh: 'លោកស្រី ស៊ុំ សុគន្ធា',
+    brideFatherKh: 'លោក កែវ វណ្ណារ៉ា',
+    brideMotherKh: 'លោកស្រី អ៊ុំ សុវណ្ណារី',
+    groomFatherEn: 'Mr. Chan Sovann',
+    groomMotherEn: 'Mrs. Sum Sokunthea',
+    brideFatherEn: 'Mr. Keo Vannara',
+    brideMotherEn: 'Mrs. Oum Sovannary',
+
+    weddingDate: '2026-12-18',
+    weddingDateKh: 'ថ្ងៃសុក្រ ទី១៨ ខែធ្នូ ឆ្នាំ២០២៦',
+    weddingTimeKh: 'វេលាម៉ោង ១១:០០ ថ្ងៃត្រង់',
+    weddingTimeEn: 'From 11:00 AM onwards',
+    auspiciousTextKh: 'ត្រូវនឹងថ្ងៃ ១០រោច ខែមិគសិរ ឆ្នាំមមី អដ្ឋស័ក ព.ស. ២៥៧០',
+
+    venueNameKh: 'កេហដ្ឋានខាងស្រី',
+    venueNameEn: "Bride's Residence",
+    venueAddressKh: 'ភូមិព្រៃធំ សង្កាត់ព្រៃស ខណ្ឌដង្កោ រាជធានីភ្នំពេញ។',
+    venueAddressEn: 'Prey Thom Village, Prey Sa, Dangkao District, Phnom Penh.',
+    venueMapUrl: 'https://maps.google.com/?q=Phnom+Penh+Cambodia',
+    venueMapImage: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop',
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125095.34003058852!2d104.8197775!3d11.5796636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109513dc76a6be3%3A0x9c010ee85ab525bb!2sPhnom%20Penh!5e0!3m2!1sen!2skh!4v1700000000000',
+
+    templateId: 'tpl_gold_369',
+    cardBackgroundImage: weddingArtworkClassic,
+    customTheme: {
+      primaryColor: '#D4AF37',
+      accentColor: '#8C6D1F',
+      enablePetals: true,
+      enableMusic: true,
+      musicTrack: 'Khmer Classical Chimes',
+      envelopeStyle: 'classic-gold',
+      fontFamilyKhmer: 'moul',
+      showSlideshowOnOpen: false
+    },
+
+    coverPhoto: weddingArtworkClassic,
+    secondaryPhoto: weddingArtworkClassic,
+    galleryPhotos: [],
+
+    loveStoryKh: '«ក្ដីស្រលាញ់ដែលប្រកបដោយភាពស្មោះត្រង់ ការគោរព និងកិត្តិយសថ្លៃថ្លាសម្រាប់ជីវិតគូ»',
+    loveStoryEn: '"Two souls with but a single thought, two hearts that beat as one."',
+    weddingQuoteKh: 'វត្តមានដ៏ខ្ពង់ខ្ពស់របស់ ឯកឧត្តម លោកជំទាវ លោក លោកស្រី អ្នកនាងកញ្ញា គឺជាកិត្តិយសដ៏ធំធេង និងជាសិរីមង្គលដ៏ឧត្តុង្គឧត្តមសម្រាប់គ្រួសារយើងខ្ញុំទាំងពីរ។',
+
+    weddingProgramDay1TitleKh: 'កម្មវិធីថ្ងៃទី១ ថ្ងៃសុក្រ ទី១៨ ខែធ្នូ ឆ្នាំ២០២៦',
+    weddingProgramDay2TitleKh: 'កម្មវិធីថ្ងៃទី២ ថ្ងៃសៅរ៍ ទី១៩ ខែធ្នូ ឆ្នាំ២០២៦',
+    agendas: DEFAULT_WEDDING_AGENDAS,
+
+    bankAccounts: [
+      {
+        id: 'ba_369_1',
+        bankName: 'ABA Bank (KHQR)',
+        accountName: 'CHAN PISETH & KEO RACHANA',
+        accountNumber: '003 699 999 (USD)',
+        qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=ABA_PAY_PISETH_RACHANA_USD',
+        currency: 'USD'
+      }
+    ],
+
+    guests: [
+      {
+        id: 'gst_369_01',
+        code: 'VIP999',
+        fullNameKh: 'ឯកឧត្តម ហ៊ុន វណ្ណារិទ្ធ និងលោកជំទាវ',
+        fullNameEn: 'H.E. Hun Vannarith & Madam',
+        titleKh: 'ឯកឧត្តម',
+        titleEn: 'H.E.',
+        phone: '012 888 999',
+        side: 'mutual',
+        category: 'VIP',
+        paxExpected: 2,
+        tableNumber: 'VIP 01',
+        rsvpStatus: 'attending',
+        attendeesCount: 2,
+        wishMessage: 'សូមប្រសិទ្ធិពរជ័យ សិរីសួស្តី ជ័យមង្គល វិបុលសុខគ្រប់ប្រការដល់គូស្វាមីភរិយាថ្មី!',
+        rsvpDate: '2026-09-01'
+      }
+    ],
+
+    wishes: [
+      {
+        id: 'wsh_369_01',
+        guestName: 'ឯកឧត្តម ហ៊ុន វណ្ណារិទ្ធ និងលោកជំទាវ',
+        guestTitle: 'ឯកឧត្តម',
+        message: 'សូមប្រសិទ្ធិពរជ័យ សិរីសួស្តី ជ័យមង្គល វិបុលសុខគ្រប់ប្រការដល់គូស្វាមីភរិយាថ្មី!',
+        date: '2026-09-01',
+        attendees: 2,
+        isAttending: true,
+        side: 'mutual'
+      }
+    ],
+
+    createdDate: '2026-09-01',
     status: 'active',
     packageType: 'VIP Gold',
     adminPromo: {

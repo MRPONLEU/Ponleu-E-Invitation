@@ -1048,7 +1048,16 @@ ${inviteLink}`;
                 return (
                   <div
                     key={tpl.id}
-                    onClick={() => updateCouple(prev => ({ ...prev, templateId: tpl.id }))}
+                    onClick={() => updateCouple(prev => ({
+                      ...prev,
+                      templateId: tpl.id,
+                      customTheme: {
+                        ...prev.customTheme,
+                        primaryColor: tpl.primaryColor || prev.customTheme.primaryColor,
+                        accentColor: tpl.accentColor || prev.customTheme.accentColor,
+                        envelopeStyle: tpl.code?.startsWith('T368') ? 'royal-violet' : (tpl.code?.startsWith('T369') ? 'classic-gold' : prev.customTheme.envelopeStyle)
+                      }
+                    }))}
                     className={`cursor-pointer rounded-2xl border-2 overflow-hidden transition-all duration-200 flex flex-col justify-between ${
                       isSelected
                         ? 'border-[#D4AF37] ring-4 ring-[#D4AF37]/20 shadow-md bg-amber-50/20'

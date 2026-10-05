@@ -27,6 +27,8 @@ export interface Template {
   badge?: string;
   coverImage: string;
   previewImage: string;
+  cardBackgroundImage?: string;
+  cardOverlayFrame?: string;
   primaryColor: string;
   accentColor: string;
   bgGradient: string;
@@ -145,6 +147,7 @@ export interface CoupleEvent {
   // Media
   coverPhoto: string;
   cardBackgroundImage?: string;
+  cardOverlayFrame?: string;
   secondaryPhoto?: string;
   galleryPhotos: string[];
   

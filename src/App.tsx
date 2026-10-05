@@ -58,13 +58,34 @@ export default function App() {
     const init = async () => {
       const { subscribeToCollection } = await import('./lib/firebaseSync');
       unsubs.push(subscribeToCollection<Template>('templates', (data) => {
-        _setTemplates(data.length ? data : INITIAL_TEMPLATES);
+        if (!data.length) {
+          _setTemplates(INITIAL_TEMPLATES);
+        } else {
+          const missingSystemTemplates = INITIAL_TEMPLATES.filter(
+            initTpl => !data.some(d => d.id === initTpl.id || d.code === initTpl.code)
+          );
+          if (missingSystemTemplates.length > 0) {
+            _setTemplates([...missingSystemTemplates, ...data]);
+          } else {
+            _setTemplates(data);
+          }
+        }
       }));
       unsubs.push(subscribeToCollection<MusicTrack>('musicTracks', (data) => {
         _setMusicTracks(data.length ? data : INITIAL_MUSIC_TRACKS);
       }));
       unsubs.push(subscribeToCollection<CoupleEvent>('couples', (data) => {
-        _setCouples(data.length ? data : INITIAL_COUPLES);
+        if (!data.length) {
+          _setCouples(INITIAL_COUPLES);
+        } else {
+          const hasCouple369 = data.some(c => c.id === 'couple_369' || c.templateId === 'tpl_gold_369');
+          const couple369 = INITIAL_COUPLES.find(c => c.id === 'couple_369');
+          if (!hasCouple369 && couple369) {
+            _setCouples([...data, couple369]);
+          } else {
+            _setCouples(data);
+          }
+        }
       }));
       setIsFirebaseReady(true);
     };

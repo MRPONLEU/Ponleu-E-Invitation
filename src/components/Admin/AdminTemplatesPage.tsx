@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Template, CoupleEvent, Language } from '../../types';
-import { Palette, Search, Plus, Edit3, Eye } from 'lucide-react';
+import { Palette, Search, Plus, Edit3, Eye, Copy, Trash2 } from 'lucide-react';
 
 interface AdminTemplatesPageProps {
   templates: Template[];
@@ -34,6 +34,27 @@ export const AdminTemplatesPage: React.FC<AdminTemplatesPageProps> = ({
     const matchStyle = selectedStyleFilter === 'all' || t.style === selectedStyleFilter;
     return matchSearch && matchStyle;
   });
+
+  const handleDuplicateTemplate = (tpl: Template) => {
+    const newTemplate: Template = {
+      ...tpl,
+      id: `template_${Date.now()}`,
+      code: `${tpl.code}-COPY`,
+      nameKh: `${tpl.nameKh} (ចម្លង)`,
+      nameEn: `${tpl.nameEn} (Copy)`,
+      usageCount: 0,
+    };
+    setTemplates(prev => [newTemplate, ...prev]);
+  };
+
+  const handleDeleteTemplate = (tpl: Template) => {
+    const confirmMsg = lang === 'km' 
+      ? `តើអ្នកពិតជាចង់លុបគំរូ "${tpl.nameKh}" នេះមែនទេ?`
+      : `Are you sure you want to delete template "${tpl.nameEn}"?`;
+    if (window.confirm(confirmMsg)) {
+      setTemplates(prev => prev.filter(t => t.id !== tpl.id));
+    }
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
@@ -153,7 +174,15 @@ export const AdminTemplatesPage: React.FC<AdminTemplatesPageProps> = ({
                   {lang === 'km' ? `ប្រើប្រាស់ ${tpl.usageCount} ដង` : `Used ${tpl.usageCount} times`}
                 </span>
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                  <button
+                    onClick={() => handleDuplicateTemplate(tpl)}
+                    className="px-2.5 py-1.5 text-[11px] font-normal bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl flex items-center gap-1 cursor-pointer"
+                    title={lang === 'km' ? 'ចម្លងម៉ូតនេះ' : 'Duplicate template'}
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                  </button>
+
                   <button
                     onClick={() => onEditTemplate(tpl)}
                     className="px-3 py-1.5 text-[11px] font-normal bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl flex items-center gap-1 cursor-pointer"
@@ -164,8 +193,11 @@ export const AdminTemplatesPage: React.FC<AdminTemplatesPageProps> = ({
 
                   <button
                     onClick={() => {
-                      if (couples.length > 0) {
-                        setCouples(prev => prev.map(c => ({ ...c, templateId: tpl.id })));
+                      const existingMatch = couples.find(c => c.templateId === tpl.id);
+                      if (existingMatch) {
+                        onPreviewCouple(existingMatch.id);
+                      } else if (couples.length > 0) {
+                        setCouples(prev => prev.map((c, i) => i === 0 ? { ...c, templateId: tpl.id } : c));
                         onPreviewCouple(couples[0].id);
                       }
                     }}
@@ -173,6 +205,14 @@ export const AdminTemplatesPage: React.FC<AdminTemplatesPageProps> = ({
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>{lang === 'km' ? 'មើលគំរូ' : 'Preview'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => handleDeleteTemplate(tpl)}
+                    className="px-2 py-1.5 text-[11px] font-normal bg-red-50 hover:bg-red-100 text-red-600 rounded-xl flex items-center gap-1 cursor-pointer"
+                    title={lang === 'km' ? 'លុបគំរូនេះ' : 'Delete template'}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>

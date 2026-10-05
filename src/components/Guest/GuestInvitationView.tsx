@@ -35,9 +35,11 @@ import {
 import confetti from 'canvas-confetti';
 import { weddingAudioPlayer } from '../../utils/audioSynthesizer';
 import { Template368Card } from './Template368Card';
+import { Template369Card } from './Template369Card';
 import { WeddingGallerySlideshow } from './WeddingGallerySlideshow';
 import weddingTitleImage from '../../assets/images/frome3.png';
 import loveOrnament from '../../assets/images/love.png';
+import weddingArtworkClassic from '../../assets/images/frome.jpg';
 import ponleuLogo from '../../assets/images/ponleu_logo.svg';
 
 const cleanParentName = (name?: string) => {
@@ -158,7 +160,8 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
 
   // Current template
   const tpl = templates.find(t => t.id === couple.templateId) || templates[0];
-  const isPurpleTheme = tpl.style === 'royal-violet' || couple.customTheme.primaryColor === '#7E22CE' || tpl.id === 'tpl_purple_02';
+  const isTemplate369 = tpl.id === 'tpl_gold_369' || tpl.code?.startsWith('T369') || tpl.style === 'traditional-gold';
+  const isPurpleTheme = !isTemplate369 && (tpl.style === 'royal-violet' || couple.customTheme.primaryColor === '#7E22CE' || tpl.id === 'tpl_purple_02' || tpl.code?.startsWith('T368'));
 
   // Dynamic Khmer font family class
   const khmerTitleFont = couple.customTheme.fontFamilyKhmer === 'moul'
@@ -218,10 +221,11 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
       origin: { y: 0.6 }
     });
 
-    // Check if slideshow on open is enabled (default is true)
-    if (couple.customTheme?.showSlideshowOnOpen !== false) {
+    // Check if slideshow on open is enabled (Template 369 is strictly without Slide Show for couples who do not want photos)
+    if (!isTemplate369 && couple.customTheme?.showSlideshowOnOpen !== false && (couple.galleryPhotos?.length || 0) > 0) {
       setIsSlideshowOpen(true);
     } else {
+      setIsSlideshowOpen(false);
       setIsOpen(true);
     }
   };
@@ -302,21 +306,33 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
   };
 
   return (
-    <div className={`min-h-full h-full ${isOpen ? 'bg-transparent pb-20 overflow-y-auto overflow-x-hidden' : `bg-gradient-to-b ${tpl.bgGradient} pb-0 overflow-hidden`} relative text-[#2D2D2D] selection:bg-[#D4AF37]/30 no-scrollbar`}>
+    <div className={`min-h-full h-full ${isOpen ? 'bg-[#0A0A0A] pb-0 overflow-y-auto overflow-x-hidden' : `bg-gradient-to-b ${tpl.bgGradient} pb-0 overflow-hidden`} relative text-[#2D2D2D] selection:bg-[#D4AF37]/30 no-scrollbar`}>
       
-      {/* Background Couple Photo behind all text when Invitation is Opened with GPU-Accelerated Ken Burns */}
+      {/* Background Artwork/Photo behind all text when Invitation is Opened - Constrained to phone size on desktop */}
       {isOpen && (
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#1A1A1A]">
-          <img 
-            src={couple.coverPhoto || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop'}
-            alt="Background Couple"
-            className="w-full h-full object-cover object-center animate-smooth-kenburns transform-gpu"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop';
-            }}
-          />
-          {/* Subtle gradient overlay to ensure text readability without heavy GPU filter */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent via-70% to-black/90 pointer-events-none"></div>
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#0A0A0A] flex justify-center">
+          {/* Subtle ambient blurred background for widescreen desktop */}
+          <div className="hidden sm:block absolute inset-0 w-full h-full overflow-hidden opacity-25 filter blur-3xl pointer-events-none">
+            <img 
+              src={isTemplate369 ? (couple.cardBackgroundImage || weddingArtworkClassic) : (couple.coverPhoto || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop')}
+              alt="Ambient Background"
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
+
+          {/* Phone-sized Background container */}
+          <div className="relative w-full max-w-[480px] h-full overflow-hidden shadow-2xl border-x border-[#D4AF37]/20">
+            <img 
+              src={isTemplate369 ? (couple.cardBackgroundImage || weddingArtworkClassic) : (couple.coverPhoto || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop')}
+              alt="Background"
+              className="w-full h-full object-cover object-center animate-smooth-kenburns transform-gpu"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = isTemplate369 ? weddingArtworkClassic : 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop';
+              }}
+            />
+            {/* Subtle gradient overlay to ensure text readability without heavy GPU filter */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/40 via-70% to-black/90 pointer-events-none"></div>
+          </div>
         </div>
       )}
 
@@ -372,8 +388,8 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
         </button>
       </div>
 
-      {/* FULL-SCREEN PRE-WEDDING GALLERY SLIDESHOW */}
-      {isSlideshowOpen && (
+      {/* FULL-SCREEN PRE-WEDDING GALLERY SLIDESHOW (Disabled for Template 369) */}
+      {!isTemplate369 && isSlideshowOpen && (
         <WeddingGallerySlideshow
           couple={couple}
           lang={lang}
@@ -387,7 +403,14 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
       {!isOpen ? (
         <div className="relative z-30 h-full flex items-center justify-center p-0 w-full">
           <div className="w-full h-full text-center animate-in fade-in zoom-in-95 duration-500 flex flex-col justify-center items-center">
-            {isPurpleTheme ? (
+            {isTemplate369 ? (
+              <Template369Card
+                couple={couple}
+                currentGuest={currentGuest}
+                onOpen={handleOpenEnvelope}
+                isOpen={isOpen}
+              />
+            ) : isPurpleTheme ? (
               <Template368Card
                 couple={couple}
                 currentGuest={currentGuest}
@@ -395,85 +418,12 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
                 isOpen={isOpen}
               />
             ) : (
-              /* Classic Gold Front Cover Card Container */
-              <div className="relative w-full max-w-none sm:max-w-md mx-auto bg-gradient-to-b from-[#FFF5F5] via-[#FFFDF9] to-[#FCEFEF] border-4 border-[#E8C29D]/50 rounded-[36px] p-5 sm:p-7 shadow-2xl overflow-hidden text-center space-y-3.5 animate-smooth-fade-up">
-                
-                {/* Gold Top Accent Line */}
-                <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#D4AF37] via-[#DFBA49] to-[#B8962D]"></div>
-                
-                {/* Background Frame Border */}
-                <div className="absolute inset-x-2 top-2 bottom-2 rounded-[30px] border border-[#D4AF37]/25 pointer-events-none"></div>
-
-                {/* 1. Header Title: សិរីមង្គល អាពាហ៍ពិពាហ៍ */}
-                <div className="pt-2 space-y-1 animate-smooth-fade-down delay-100">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-[11px] font-normal bg-white/80 border-[#D4AF37]/30 text-[#8C6D1F]">
-                    <Sparkles className="w-3 h-3 text-[#D4AF37]" />
-                    <span>សំបុត្រអញ្ជើញអាពាហ៍ពិពាហ៍ឌីជីថល</span>
-                  </div>
-                  <h2 className={`text-2xl sm:text-3xl font-normal ${khmerTitleFont} text-[#8B3A3A] tracking-wide pt-0.5`}>
-                    សិរីមង្គល អាពាហ៍ពិពាហ៍
-                  </h2>
-                </div>
-
-                {/* 2. Monogram Emblem Badge */}
-                <div className="flex justify-center my-0.5 animate-smooth-fade-up delay-200">
-                  <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full p-1.5 shadow-md border-2 border-[#D4AF37] flex items-center justify-center relative bg-gradient-to-br from-[#8B2323] via-[#A83232] to-[#681818] animate-golden-ripple">
-                    <div className="w-full h-full rounded-full border border-[#DFBA49]/60 flex flex-col items-center justify-center text-amber-100 font-khmer-title">
-                      <span className="text-xs sm:text-sm font-bold leading-none">
-                        {couple.groomNickKh?.substring(0, 1) || 'វ'}
-                      </span>
-                      <div className="w-4 h-[1px] bg-amber-200/50 my-0.5"></div>
-                      <span className="text-xs sm:text-sm font-bold leading-none">
-                        {couple.brideNickKh?.substring(0, 1) || 'ស'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3. Auspicious Date */}
-                <p className={`text-xs sm:text-sm font-normal font-battambang text-[#8B3A3A] animate-smooth-fade-up delay-300`}>
-                  {couple.auspiciousTextKh || `ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦`}
-                </p>
-
-                {/* 4. Center Bride & Groom Photo */}
-                <div className="relative mx-auto max-w-[260px] rounded-2xl overflow-hidden shadow-lg border-4 border-white ring-2 ring-[#D4AF37]/40 my-1 animate-smooth-fade-up delay-450">
-                  <img
-                    src={couple.coverPhoto}
-                    alt={`${couple.groomNameKh} & ${couple.brideNameKh}`}
-                    className="w-full h-52 sm:h-60 object-cover object-top hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                </div>
-
-                {/* 5. Guest Honorific Box: "សូមគោរពអញ្ជើញ" */}
-                <div className="space-y-1 pt-1 animate-smooth-fade-up delay-600">
-                  <p className={`text-xs font-medium ${khmerTitleFont} text-[#8B3A3A]`}>
-                    សូមគោរពអញ្ជើញ
-                  </p>
-                  <div className="px-4 py-2 bg-white/95 rounded-2xl border-2 border-[#D4AF37]/40 shadow-xs backdrop-blur-xs max-w-xs mx-auto">
-                    <h3 className={`text-sm sm:text-base font-normal text-gray-900 ${khmerTitleFont} truncate`}>
-                      {currentGuest ? `${currentGuest.titleKh} ${currentGuest.fullNameKh}` : 'ឯកឧត្តម លោកជំទាវ លោក លោកស្រី អ្នកនាងកញ្ញា'}
-                    </h3>
-                  </div>
-                </div>
-
-                {/* 6. Interactive Open Button "បើកសំបុត្រ" */}
-                <div className="pt-1.5 animate-smooth-fade-up delay-750">
-                  <button
-                    id="open-invitation-btn"
-                    onClick={handleOpenEnvelope}
-                    className="group relative inline-flex flex-col items-center justify-center gap-1"
-                  >
-                    <div className="w-13 h-13 rounded-full bg-gradient-to-tr from-[#8B2323] via-[#A83232] to-[#8B2323] text-amber-200 border-2 border-[#D4AF37] ring-4 ring-[#D4AF37]/30 shadow-xl flex items-center justify-center group-hover:scale-110 transition-all duration-300 animate-golden-ripple">
-                      <Play className="w-5 h-5 fill-amber-200 ml-0.5" />
-                    </div>
-                    <span className={`text-xs font-normal ${khmerTitleFont} text-[#8B3A3A] group-hover:text-red-700 transition-colors`}>
-                      បើកសំបុត្រ
-                    </span>
-                  </button>
-                </div>
-
-              </div>
+              <Template369Card
+                couple={couple}
+                currentGuest={currentGuest}
+                onOpen={handleOpenEnvelope}
+                isOpen={isOpen}
+              />
             )}
 
           </div>
@@ -482,7 +432,7 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
 
         /* LIVE INVITATION CARD CONTENT (WHEN OPENED) */
         <>
-          <div className="w-full animate-in fade-in duration-700">
+          <div className="w-full max-w-[480px] mx-auto animate-in fade-in duration-700 relative z-10 shadow-2xl">
             
             {/* Section 1: Full-Screen (100dvh) 9:16 Hero Section */}
           <div className="relative w-full h-[100dvh] min-h-[100dvh] flex flex-col justify-between p-6 sm:p-8 text-center text-white overflow-hidden select-none z-10">
@@ -544,7 +494,7 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
 
           {/* Detailed Content Sections Container with translucent backdrop for text readability and smooth 250px gradient fade */}
           <div 
-            className="max-w-xl mx-auto px-6 pt-28 pb-4 space-y-12 relative z-10 text-white/95 bg-black/60 backdrop-blur-md -mt-32"
+            className="w-full px-6 pt-28 pb-4 space-y-12 relative z-10 text-white/95 bg-black/50 backdrop-blur-[0.5px] -mt-32"
             style={{
               WebkitMaskImage: 'linear-gradient(to bottom, transparent 0px, black 250px, black 100%)',
               maskImage: 'linear-gradient(to bottom, transparent 0px, black 250px, black 100%)'
@@ -825,8 +775,8 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
                </a>
             </div>
 
-            {/* Photo Gallery - Styled for Dark Mode / Pink Background */}
-            {couple.galleryPhotos && couple.galleryPhotos.length > 0 && (
+            {/* Photo Gallery - Disabled for Template 369 which is for couples who do not want photos */}
+            {!isTemplate369 && couple.galleryPhotos && couple.galleryPhotos.length > 0 && (
               <div className="space-y-6 pt-10 text-center border-t border-[#D4AF37]/30">
                 <div className="space-y-1">
                   <h3 className="text-xl sm:text-2xl font-normal font-muol-light text-[#D4AF37] leading-relaxed drop-shadow-sm">
@@ -877,7 +827,7 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto">
                 {(couple.bankAccounts || []).map((ba) => (
-                  <div key={ba.id} className="p-5 rounded-2xl bg-black/30 backdrop-blur-md border border-[#D4AF37]/40 space-y-4 shadow-sm">
+                  <div key={ba.id} className="p-5 rounded-2xl bg-black/30 backdrop-blur-[0.5px] border border-[#D4AF37]/40 space-y-4 shadow-sm">
                     <span className="text-sm font-normal text-[#D4AF37] block font-battambang drop-shadow-sm">{ba.bankName}</span>
                     <div className="w-36 h-36 bg-white p-2 rounded-xl mx-auto border-2 border-[#D4AF37]/50 shadow-md">
                       <img src={ba.qrUrl} alt={ba.bankName} className="w-full h-full object-contain" />
@@ -940,7 +890,7 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
           </div>
 
           {/* Floating Share / Copy Link Toolbar */}
-          <div className="flex items-center justify-center gap-3 pt-4">
+          <div className="flex items-center justify-center gap-3 pt-4 pb-4">
             <button
               onClick={handleCopyLink}
               className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-xl text-xs font-normal text-gray-700 shadow-xs flex items-center gap-1.5"
@@ -949,18 +899,12 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
               <span>{copiedLink ? 'បានចម្លងតំណភ្ជាប់!' : 'ចម្លង Link សំបុត្រ'}</span>
             </button>
           </div>
-
-          {/* Footer Branding */}
-          <div className="text-center pt-2 pb-2 text-[11px] text-gray-400 space-y-0.5">
-            <p>E-Invitation Platform © 2026</p>
-            <p>រៀបចំយ៉ាងប្រណិតជូនគូស្វាមីភរិយាថ្មី {couple.groomNickKh} & {couple.brideNickKh}</p>
-          </div>
         </div>
 
-        {/* Admin Promo & Contacts (If enabled or provided) - Connected seamlessly */}
-        {(couple.adminPromo?.enabled || couple.contactFacebook || couple.contactTelegram || couple.contactPhone) && (
-          <div className="w-full text-center mt-0 pt-0">
-            <div className="p-5 bg-black/85 backdrop-blur-md border-t border-[#D4AF37]/50 shadow-2xl w-full space-y-3">
+        {/* Bottom Footer Section (Admin Promo & Contacts) - Stuck flush to the very bottom */}
+        {(couple.adminPromo?.enabled || couple.contactFacebook || couple.contactTelegram || couple.contactPhone) ? (
+          <footer className="w-full max-w-[480px] mx-auto text-center mt-0 pt-0 relative z-20">
+            <div className="p-5 pb-10 sm:pb-12 bg-black/90 backdrop-blur-[0.5px] border-t border-[#D4AF37]/50 border-x border-[#D4AF37]/20 shadow-2xl w-full space-y-3">
               {/* Logo Display at Top of Footer */}
               <div className="flex items-center justify-center pt-1 pb-1">
                 <img 
@@ -971,19 +915,19 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
               </div>
 
               {couple.adminPromo?.enabled && couple.adminPromo.textKh && (
-                <div className="text-[13px] font-battambang text-[#D4AF37]/95 whitespace-pre-line leading-relaxed">
+                <div className="text-[13px] font-battambang text-[#D4AF37]/95 whitespace-pre-line leading-relaxed max-w-xl mx-auto px-4">
                   {couple.adminPromo.textKh}
                 </div>
               )}
 
               {/* Contact Icons in Footer */}
               {(couple.contactFacebook || couple.contactTelegram || couple.contactPhone) && (
-                <div className="flex items-center justify-center gap-2.5 pt-1">
+                <div className="flex items-center justify-center gap-3 pt-1">
                   {couple.contactPhone && (
                     <a 
                       href={`tel:${couple.contactPhone.replace(/\s+/g, '')}`} 
                       title={`Call: ${couple.contactPhone}`}
-                      className="w-8 h-8 rounded-full border border-[#D4AF37]/50 bg-black/40 hover:bg-[#D4AF37]/20 transition-all text-[#D4AF37] flex items-center justify-center"
+                      className="w-9 h-9 rounded-full border border-[#D4AF37]/60 bg-black/50 hover:bg-[#D4AF37]/20 transition-all text-[#D4AF37] flex items-center justify-center shadow-md active:scale-95"
                     >
                       <Phone className="w-4 h-4 text-emerald-400" />
                     </a>
@@ -994,7 +938,7 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
                       target="_blank" 
                       rel="noreferrer" 
                       title="Telegram"
-                      className="w-8 h-8 rounded-full border border-[#D4AF37]/50 bg-black/40 hover:bg-[#D4AF37]/20 transition-all text-[#D4AF37] flex items-center justify-center"
+                      className="w-9 h-9 rounded-full border border-[#D4AF37]/60 bg-black/50 hover:bg-[#D4AF37]/20 transition-all text-[#D4AF37] flex items-center justify-center shadow-md active:scale-95"
                     >
                       <MessageCircle className="w-4 h-4 text-sky-400" />
                     </a>
@@ -1005,7 +949,7 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
                       target="_blank" 
                       rel="noreferrer" 
                       title="Facebook"
-                      className="w-8 h-8 rounded-full border border-[#D4AF37]/50 bg-black/40 hover:bg-[#D4AF37]/20 transition-all text-[#D4AF37] flex items-center justify-center"
+                      className="w-9 h-9 rounded-full border border-[#D4AF37]/60 bg-black/50 hover:bg-[#D4AF37]/20 transition-all text-[#D4AF37] flex items-center justify-center shadow-md active:scale-95"
                     >
                       <Facebook className="w-4 h-4 text-blue-400" />
                     </a>
@@ -1020,8 +964,21 @@ export const GuestInvitationView: React.FC<GuestInvitationViewProps> = ({
                   </a>
                 </div>
               )}
+
+              {/* Footer Branding inside bottom footer */}
+              <div className="pt-2 text-[10px] text-gray-400/80 space-y-0.5 border-t border-white/10 mt-3 max-w-xl mx-auto">
+                <p>E-Invitation Platform © 2026</p>
+                <p>រៀបចំយ៉ាងប្រណិតជូនគូស្វាមីភរិយាថ្មី {couple.groomNickKh} & {couple.brideNickKh}</p>
+              </div>
             </div>
-          </div>
+          </footer>
+        ) : (
+          <footer className="w-full max-w-[480px] mx-auto text-center mt-0 pt-0 relative z-20">
+            <div className="p-4 pb-8 bg-black/90 backdrop-blur-[0.5px] border-t border-[#D4AF37]/50 border-x border-[#D4AF37]/20 shadow-2xl text-[11px] text-gray-400 space-y-0.5">
+              <p>E-Invitation Platform © 2026</p>
+              <p>រៀបចំយ៉ាងប្រណិតជូនគូស្វាមីភរិយាថ្មី {couple.groomNickKh} & {couple.brideNickKh}</p>
+            </div>
+          </footer>
         )}
       </>
     )}

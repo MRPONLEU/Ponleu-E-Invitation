@@ -1002,17 +1002,37 @@ export const AdminCouplesPage: React.FC<AdminCouplesPageProps> = ({
                       <span className="text-[10px] text-gray-500 font-medium">{lang === 'km' ? 'គំរូស្រាប់:' : 'Presets:'}</span>
                       <button
                         type="button"
-                        onClick={() => setEditingCouple(prev => prev ? { ...prev, cardBackgroundImage: weddingArtwork368 } : null)}
+                        onClick={() => setEditingCouple(prev => prev ? { 
+                          ...prev, 
+                          templateId: 'tpl_purple_02',
+                          cardBackgroundImage: weddingArtwork368,
+                          customTheme: {
+                            ...prev.customTheme,
+                            primaryColor: '#7E22CE',
+                            accentColor: '#D4AF37',
+                            envelopeStyle: 'royal-violet'
+                          }
+                        } : null)}
                         className="px-2 py-0.5 text-[10px] bg-white hover:bg-purple-100 text-purple-800 border border-purple-200 rounded-md transition-colors cursor-pointer"
                       >
-                        🌸 គំនូរផ្កាស្វាយ 368
+                        🌸 គំរូ 368 ផ្កាស្វាយ
                       </button>
                       <button
                         type="button"
-                        onClick={() => setEditingCouple(prev => prev ? { ...prev, cardBackgroundImage: weddingArtworkClassic } : null)}
+                        onClick={() => setEditingCouple(prev => prev ? { 
+                          ...prev, 
+                          templateId: 'tpl_gold_369',
+                          cardBackgroundImage: weddingArtworkClassic,
+                          customTheme: {
+                            ...prev.customTheme,
+                            primaryColor: '#D4AF37',
+                            accentColor: '#8C6D1F',
+                            envelopeStyle: 'classic-gold'
+                          }
+                        } : null)}
                         className="px-2 py-0.5 text-[10px] bg-white hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-md transition-colors cursor-pointer"
                       >
-                        🏛️ គំនូរបុរាណ
+                        🏛️ គំរូ 369 មាសបុរាណ
                       </button>
                       <button
                         type="button"
